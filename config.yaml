@@ -1,0 +1,107 @@
+# EQBuffBot Configuration
+# ========================
+# character_name: Your character's name (as it appears in the log filename)
+# log_file:       Full path to your EverQuest log file
+# eq_window_title: Part of the EverQuest window title (used to find the window)
+# global_cooldown: Minimum seconds between any two trigger fires (prevents spam)
+
+character_name: "Tarmor"
+log_file: "C:/Users/Public/Daybreak\ Game\ Company/Installed\ Games/EverQuest/Logs/eqlog_Tarmor_teek.txt"
+eq_window_title: "EverQuest"
+global_cooldown: 5.0
+
+# triggers: List of tell patterns to watch for and respond to.
+#
+# Each trigger has:
+#   name:             Friendly label shown in logs
+#   match:            Substring to look for in the tell (case-insensitive)
+#   sender_whitelist: List of character names who can trigger this, or null for anyone
+#   default:          Set to true to fire this trigger when no other trigger matches (no match needed)
+#   actions:          List of text strings to send to EQ, in order
+#     text:           The text to type. Use {ENTER} for the Enter key, {TAB}, {F1}-{F12}, etc.
+#     delay_after:    Seconds to wait after sending this action before the next one
+
+triggers:
+  - name: "sow"
+    match: "sow"
+    sender_whitelist: null        # null = respond to anyone
+
+    actions:
+      #- text: "{ENTER} This is a test. If you see this, it worked! {ENTER}"
+      #  delay_after: 1.3
+      - text: "{ENTER}/rtar{ENTER}"
+        delay_after: 0.5
+      - text: "{ENTER} /cast 8{ENTER}"
+        delay_after: 1.5
+      - text: "{ENTER}/r You are fast now"
+        delay_after: 1.5
+      - text: "{ENTER}"
+        delay_after: 1.0
+
+  - name: "haste"
+    match: "haste"
+    sender_whitelist: null        # null = respond to anyone
+
+    actions:
+      - text: "{ENTER}/rtar{ENTER}"
+        delay_after: 0.1
+      - text: "{ENTER}/cast Talisman of Celerity{ENTER}"
+        delay_after: 0.1
+      - text: "{ENTER}/r You should be hasted now!{ENTER}"
+        delay_after: 0.0
+
+  - name: "Testing List"
+    match: "testing8"
+    sender_whitelist:
+      - "Tarmor" 
+      - "Aleran"
+      - "Fiznick"
+
+    actions:
+      - text: "{ENTER}/cast 9{ENTER}"
+        delay_after: 0.1
+      - text: "{ENTER}"
+        delay_after: 0.0
+
+  - name: "buffs"
+    match: "buffs"
+    sender_whitelist: null
+
+    actions:
+      - text: "{ENTER}/cast 1{ENTER}"
+        delay_after: 10
+      - text: "{ENTER}/cast 2{ENTER}"
+        delay_after: 8.5
+      - text: "{ENTER}/cast 3{ENTER}"
+        delay_after: 7.1
+      - text: "{ENTER}/cast 4{ENTER}"
+        delay_after: 7.5
+      - text: "{ENTER}/cast 5{ENTER}"
+        delay_after: 7.1  
+      - text: "{ENTER}/cast 6{ENTER}"
+        delay_after: 7.0
+      - text: "{ENTER}/cast 7{ENTER}"
+        delay_after: 7.0
+      - text: "{ENTER}/cast 8{ENTER}"
+        delay_after: 7.0
+      - text: "{ENTER}/cast 9{ENTER}" 
+        delay_after: 7.0
+      - text: "{ENTER}/r You look buff now!{ENTER}"
+        delay_after: 0.0
+
+  - name: "help"
+    match: "help"
+    sender_whitelist: null
+
+    actions:
+      - text: "{ENTER}/r Available buff commands are: sow, haste, buffs{ENTER}"
+        delay_after: 0.0
+
+  - name: "default"
+    default: true                 # fires when no other trigger matches
+    sender_whitelist: null        # null = respond to anyone
+    match: ""
+
+    actions:
+      - text: "{ENTER}/say I don't recognize that request. Try: sow, haste, buffs{ENTER}"
+        delay_after: 0.0
