@@ -5,8 +5,8 @@
 # eq_window_title: Part of the EverQuest window title (used to find the window)
 # global_cooldown: Minimum seconds between any two trigger fires (prevents spam)
 
-character_name: "Tarmor"
-log_file: "C:/Users/Public/Daybreak\ Game\ Company/Installed\ Games/EverQuest/Logs/eqlog_Tarmor_teek.txt"
+character_name: "Tehom"
+log_file: "C:/Users/Public/Daybreak\ Game\ Company/Installed\ Games/EverQuest/Logs/eqlog_Tehom_veeshan.txt"
 eq_window_title: "EverQuest"
 global_cooldown: 5.0
 
