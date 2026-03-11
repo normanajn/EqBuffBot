@@ -63,15 +63,15 @@ pip install -r requirements.txt
 
 ## Running
 
-When you start the program it will go to your 
+When you start the program it will go to your status bar and be available from there.  It can be stopped and reconfigured when running from the status area.
 
-Double-click `run.bat`, or from a terminal:
+To start it,  Double-click `run.bat`, or from a terminal:
 
 ```bash
 python -m eqbuffbot.main
 ```
 
-To use a different config file:
+To use a different config from the default file you can pass it along as a commandline option:
 
 ```bash
 python -m eqbuffbot.main --config mychar_config.yaml
@@ -80,7 +80,11 @@ python -m eqbuffbot.main -c mychar_config.yaml
 
 ## Configuration
 
-Edit `config.yaml` before running. Key settings:
+All parameters and triggers are controled through a configuration file.  The file is split into two main sections, general config and event triggers.
+
+Start by editing the provided `config.yaml` example before running and customize it to your character and setup.
+
+Key settings you will want to change are:
 
 | Setting | Description |
 |---|---|
@@ -91,11 +95,15 @@ Edit `config.yaml` before running. Key settings:
 
 ### Triggers
 
-Each trigger watches for a substring in incoming tells and sends a sequence of actions to EQ.
+Triggers are essentially a pattern that is matched and then actions that are taken.  You can have any number of triggers defined with each following the same general pattern.
+
+In this initial version each trigger watches for a substring in incoming tells ONLY (i.e. it must be a direct tell to you and must have the given substring in it) and when it is detect then executes the  sends a sequence of actions as direct input to EQ.
+
+Example of a Spirt of the Wolf trigger:
 
 ```yaml
 triggers:
-  - name: "sow"
+  - name: "Movement Speed"
     match: "sow"              # case-insensitive substring match
     sender_whitelist: null    # null = anyone; or list specific names
 
@@ -114,7 +122,7 @@ triggers:
 
 ### Special Keys
 
-Use curly-brace notation in `text` fields:
+If a command sequence needs a special key you can input it using the curly-brace notation in the `text` fields.  This is supported for the following keys:
 
 | Token | Key |
 |---|---|
@@ -129,25 +137,33 @@ Use curly-brace notation in `text` fields:
 
 ### Sender Whitelist
 
-Restrict a trigger to specific characters:
+Do you love/hate certain people?  Do you hate Furor?  I do.  So if you want to restrict things only respond to certain people you can create a whitelist with the different names of people to respond to.
+
+The syntax to restrict a trigger to specific characters is:
 
 ```yaml
 sender_whitelist:
   - "Guildmate"
-  - "Aleran"
+  - "Apostate"
+  - "Gster"
+  - "Etasi"
 ```
 
-Set to `null` to respond to tells from anyone.
+If the whitelist is set to `null` it responds to tells from anyone.
 
 ### Default Trigger
 
-Add `default: true` to a trigger (no `match` needed) to catch any tell that didn't match another trigger:
+What about when people send a tell that doesn't match?  Well there are a couple of options.  If you do not have a default trigger defined then nothing happens.  This is great if you are raiding and get random tells for buffs mixed in with normal tells that you want to respond to normally.
+
+IF you have a default defined then if nothing else matches, it will fire off.  This is good if you are leaving a toon up in a guild hall and want it to respond with a list of options.  HOWEVER, it will respond to ALL tells that don't match with this. (so be cautioned since this will basically make it so that people can't chat with you normally)
+
+To setup a default just add `default: true` to a trigger (no `match` needed) to catch any tell that didn't match another trigger:
 
 ```yaml
 - name: "default"
   default: true
   actions:
-    - text: "{ENTER}/r Available commands: sow, haste, buffs{ENTER}"
+    - text: "{ENTER}/r Available commands: sow, haste, buffs, hawt cyborz{ENTER}"
       delay_after: 0.0
 ```
 
@@ -177,3 +193,7 @@ Enable logging in-game with `/log on`. Log files are located at:
 ```
 C:\Users\Public\Daybreak Game Company\Installed Games\EverQuest\Logs\
 ```
+
+## Enjoy and Cyborz on!
+
+Enjoy all your buffs.  And for those who are interested you can probably tell that you can setup all sorts of fun triggers to respond to silly things.  Get a lot of "A/S/L"?  You know what to do....
