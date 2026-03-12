@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EQBuffBot — EverQuest Buff Automation</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER / HERO ===== -->
+  <header class="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-content">
+      <div class="eq-logo-ring">
+        <span class="eq-icon">⚔</span>
+      </div>
+      <h1 class="hero-title">EQBuffBot</h1>
+      <p class="hero-subtitle">Automated Buff Management for EverQuest</p>
+      <p class="hero-tagline">
+        Monitor your log. Match the tell. Cast the spell. Preserve your sanity.
+      </p>
+      <div class="hero-badges">
+        <span class="badge">Windows 10/11</span>
+        <span class="badge">Python 3.11+</span>
+        <span class="badge">System Tray</span>
+        <span class="badge">YAML Config</span>
+      </div>
+    </div>
+    <div class="scroll-indicator">&#x25BC;</div>
+  </header>
+
+  <!-- ===== NAV ===== -->
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#install">Installation</a></li>
+      <li><a href="#config">Configuration</a></li>
+      <li><a href="#tray">System Tray</a></li>
+    </ul>
+  </nav>
+
+  <main class="content-wrap">
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <span class="section-icon">📜</span>
+        <h2>What is EQBuffBot?</h2>
+      </div>
+      <div class="panel">
+        <p>
+          Are you a cleric, shaman, enchanter, or druid whose tells channel is a never-ending flood of
+          <em>"SoW me!"</em>, <em>"Haste please!"</em>, and <em>"Buffs??"</em>?
+          Does your guild rely on you to keep everyone buffed through a long raid night?
+        </p>
+        <p>
+          <strong>EQBuffBot</strong> is a lightweight Windows utility that watches your EverQuest log file
+          in real time and automatically responds to incoming tells with the correct spell sequences —
+          so you can focus on playing instead of playing secretary.
+        </p>
+
+        <div class="use-case-grid">
+          <div class="use-case-card">
+            <div class="use-case-icon">🐺</div>
+            <h3>SoW Stations</h3>
+            <p>Park a druid or shaman in the bazaar and let EQBuffBot handle the endless SoW requests automatically.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="use-case-icon">⚡</div>
+            <h3>Raid Buffing</h3>
+            <p>Set up buff stations in your guild hall. Let your alts hand out haste, clarity, and buffs while you focus.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="use-case-icon">🎯</div>
+            <h3>Targeted Spells</h3>
+            <p>Give specific guildmates custom buff sets. Raifin gets Speed of Shissar. Everyone else gets the default.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="use-case-icon">🧠</div>
+            <h3>Sanity Preservation</h3>
+            <p>Stop clicking the same spell buttons 200 times a raid night. Let the bot do the repetitive work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section id="how-it-works" class="section">
+      <div class="section-header">
+        <span class="section-icon">⚙</span>
+        <h2>How It Works</h2>
+      </div>
+      <div class="panel">
+        <p>EQBuffBot operates through a simple <strong>read → match → act</strong> pipeline:</p>
+
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Monitor the Log</h3>
+              <p>Tails your EverQuest log file in real time, detecting new lines as EQ writes them. Handles log rotation automatically.</p>
+              <code>[Sun Mar 08 12:34:56 2026] Raifin tells you, 'haste please'</code>
+            </div>
+          </div>
+          <div class="pipeline-arrow">&#x25BC;</div>
+
+          <div class="pipeline-step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Parse Tells</h3>
+              <p>Each log line is parsed with a regex to extract the sender's name and message content from direct tells.</p>
+            </div>
+          </div>
+          <div class="pipeline-arrow">&#x25BC;</div>
+
+          <div class="pipeline-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>Match Triggers</h3>
+              <p>The message is compared against your configured triggers (case-insensitive substring match). Optionally filtered by a sender whitelist and governed by a global cooldown.</p>
+            </div>
+          </div>
+          <div class="pipeline-arrow">&#x25BC;</div>
+
+          <div class="pipeline-step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h3>Send Keystrokes to EQ</h3>
+              <p>EQBuffBot focuses the EverQuest window and sends the configured action sequence — commands, spell casts, and replies — exactly as if you typed them.</p>
+              <code>/rtar → /cast Talisman of Celerity → /r You should be hasted now!</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <div class="example-label">Example Scenario</div>
+          <p>
+            Tehom is an enchanter on raid night. His tells are blowing up with haste requests.
+            With EQBuffBot configured, each <em>"haste please"</em> tell automatically triggers
+            <code>/rtar</code> (target last teller), <code>/cast Talisman of Celerity</code>,
+            and a reply — all without Tehom lifting a finger. His sanity survives the night.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="features" class="section">
+      <div class="section-header">
+        <span class="section-icon">✦</span>
+        <h2>Features</h2>
+      </div>
+      <div class="panel">
+        <div class="feature-list">
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Real-time log monitoring</strong> — Tails your EQ log file with watchdog, detecting tells the instant they appear. Handles log rotation without missing a line.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Flexible trigger matching</strong> — Each trigger matches a substring anywhere in the tell message (case-insensitive). Supports unlimited triggers per config.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Sender whitelist</strong> — Restrict individual triggers to a specific list of character names, or open them to everyone with <code>null</code>.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Default / catch-all trigger</strong> — Configure a fallback response for tells that don't match any other trigger. Great for guild hall buff bots.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Timed action sequences</strong> — Each trigger fires a list of actions in order, with configurable <code>delay_after</code> between them — long enough for spells to land.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Global cooldown</strong> — Prevents trigger spam. Configurable minimum gap between any two trigger fires.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Special key support</strong> — Use <code>{ENTER}</code>, <code>{TAB}</code>, <code>{F1}</code>–<code>{F12}</code>, arrow keys, and more in action sequences.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>System tray interface</strong> — Runs quietly in the background. Pause, resume, reload config, open logs, or quit from the tray icon — no terminal needed.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Hot config reload</strong> — Change triggers, add new ones, or update spell sequences without restarting the bot.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Rotating log file</strong> — Bot activity is logged to <code>eqbuffbot.log</code> (5 MB × 3 backups). See exactly which tells fired which triggers.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>Multiple configs</strong> — Run different configs for different characters or scenarios via the <code>--config</code> flag.
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-bullet">✦</span>
+            <div>
+              <strong>No admin rights required</strong> — Runs as a standard Python application. No special Windows permissions needed.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INSTALLATION ===== -->
+    <section id="install" class="section">
+      <div class="section-header">
+        <span class="section-icon">⚗</span>
+        <h2>Installation</h2>
+      </div>
+      <div class="panel">
+
+        <div class="req-box">
+          <h3>Requirements</h3>
+          <ul>
+            <li>Windows 10 or 11</li>
+            <li>EverQuest with logging enabled (<code>/log on</code> in-game)</li>
+            <li>Python 3.11 or newer</li>
+            <li>Python packages: PyYAML, watchdog, pywinauto, pywin32, pystray, Pillow</li>
+          </ul>
+        </div>
+
+        <h3 class="install-step-title">Step 1 — Enable EQ Logging</h3>
+        <p>Log into EverQuest and type <code>/log on</code> to enable log file output. Log files are written to:</p>
+        <pre><code>C:\Users\Public\Daybreak Game Company\Installed Games\EverQuest\Logs\</code></pre>
+
+        <h3 class="install-step-title">Step 2 — Install Dependencies</h3>
+        <p>With a virtual environment (recommended):</p>
+        <pre><code>python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt</code></pre>
+
+        <p>Or globally:</p>
+        <pre><code>pip install -r requirements.txt</code></pre>
+
+        <h3 class="install-step-title">Step 3 — Edit config.yaml</h3>
+        <p>Open <code>config.yaml</code> and set your character name, log file path, and triggers. See the <a href="#config">Configuration</a> section below.</p>
+
+        <h3 class="install-step-title">Step 4 — Run the Bot</h3>
+        <p>Double-click <code>run.bat</code>, or from a terminal:</p>
+        <pre><code>python -m eqbuffbot.main</code></pre>
+
+        <p>To use a different config file:</p>
+        <pre><code>python -m eqbuffbot.main --config mychar_config.yaml
+python -m eqbuffbot.main -c mychar_config.yaml</code></pre>
+
+        <p>The bot will minimize to your system tray and begin monitoring immediately.</p>
+      </div>
+    </section>
+
+    <!-- ===== CONFIGURATION ===== -->
+    <section id="config" class="section">
+      <div class="section-header">
+        <span class="section-icon">📋</span>
+        <h2>Configuration</h2>
+      </div>
+      <div class="panel">
+        <p>All settings live in <code>config.yaml</code>. The file has two sections: global settings and triggers.</p>
+
+        <h3>Global Settings</h3>
+        <table class="config-table">
+          <thead>
+            <tr><th>Setting</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>character_name</code></td><td>Your character's name</td></tr>
+            <tr><td><code>log_file</code></td><td>Full path to your EQ log file</td></tr>
+            <tr><td><code>eq_window_title</code></td><td>Part of the EverQuest window title (used to locate the window)</td></tr>
+            <tr><td><code>global_cooldown</code></td><td>Minimum seconds between any two trigger fires (prevents spam)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Triggers</h3>
+        <p>Each trigger watches for a keyword in incoming tells and fires a sequence of actions when matched.</p>
+
+        <pre><code>triggers:
+  - name: "Spirit of the Wolf"
+    match: "sow"              # case-insensitive substring match
+    sender_whitelist: null    # null = anyone can trigger this
+
+    actions:
+      - text: "{ENTER}/rtar{ENTER}"
+        delay_after: 0.5      # seconds before next action
+      - text: "{ENTER}/cast 8{ENTER}"
+        delay_after: 1.5
+      - text: "{ENTER}/r You are fast now{ENTER}"
+        delay_after: 0.0</code></pre>
+
+        <h3>Sender Whitelist</h3>
+        <p>Restrict a trigger to specific characters. Useful for private buff sets or trusted guildmates only.</p>
+        <pre><code>sender_whitelist:
+  - "Guildmaster"
+  - "Altchar"
+  - "Raifin"</code></pre>
+        <p>Set to <code>null</code> to respond to tells from anyone.</p>
+
+        <h3>Default / Catch-All Trigger</h3>
+        <p>A trigger with <code>default: true</code> fires when no other trigger matched. Perfect for guild hall buff bots that need to reply with a help message.</p>
+        <pre><code>- name: "default"
+  default: true
+  sender_whitelist: null
+  actions:
+    - text: "{ENTER}/r Available commands: sow, haste, buffs{ENTER}"
+      delay_after: 0.0</code></pre>
+
+        <div class="warning-box">
+          <strong>Heads up:</strong> The default trigger responds to <em>every</em> tell that doesn't match another trigger — including normal chat. Use it when your bot is parked in the guild hall, not when you're actively playing.
+        </div>
+
+        <h3>Special Keys Reference</h3>
+        <table class="config-table">
+          <thead>
+            <tr><th>Token</th><th>Key Sent</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>{ENTER}</code></td><td>Enter</td></tr>
+            <tr><td><code>{TAB}</code></td><td>Tab</td></tr>
+            <tr><td><code>{ESC}</code></td><td>Escape</td></tr>
+            <tr><td><code>{SPACE}</code></td><td>Space</td></tr>
+            <tr><td><code>{F1}–{F12}</code></td><td>Function keys</td></tr>
+            <tr><td><code>{UP} {DOWN} {LEFT} {RIGHT}</code></td><td>Arrow keys</td></tr>
+            <tr><td><code>{DELETE}</code></td><td>Delete</td></tr>
+            <tr><td><code>{BACK}</code></td><td>Backspace</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SYSTEM TRAY ===== -->
+    <section id="tray" class="section">
+      <div class="section-header">
+        <span class="section-icon">🗺</span>
+        <h2>System Tray</h2>
+      </div>
+      <div class="panel">
+        <p>EQBuffBot runs silently in the Windows system tray. Right-click the tray icon for these options:</p>
+
+        <div class="tray-options">
+          <div class="tray-option">
+            <span class="tray-opt-icon">⏸</span>
+            <div>
+              <strong>Pause / Resume</strong>
+              <p>Temporarily stop responding to tells without closing the bot. Toggle back when you're ready.</p>
+            </div>
+          </div>
+          <div class="tray-option">
+            <span class="tray-opt-icon">↺</span>
+            <div>
+              <strong>Reload Config</strong>
+              <p>Reload <code>config.yaml</code> on the fly. Add triggers, change spells, update whitelists — no restart needed.</p>
+            </div>
+          </div>
+          <div class="tray-option">
+            <span class="tray-opt-icon">📄</span>
+            <div>
+              <strong>Open Log</strong>
+              <p>Opens <code>eqbuffbot.log</code> so you can see exactly which tells were received and which triggers fired.</p>
+            </div>
+          </div>
+          <div class="tray-option">
+            <span class="tray-opt-icon">✕</span>
+            <div>
+              <strong>Quit</strong>
+              <p>Gracefully shut down all monitoring threads and exit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LOG FORMAT ===== -->
+    <section id="logformat" class="section">
+      <div class="section-header">
+        <span class="section-icon">🔍</span>
+        <h2>EQ Log Format</h2>
+      </div>
+      <div class="panel">
+        <p>EverQuest writes log lines in this format. EQBuffBot parses the sender name and message from direct tell lines:</p>
+        <pre><code>[Sun Mar 08 12:34:56 2026] SenderName tells you, 'message here'</code></pre>
+        <p>Enable logging in-game with <code>/log on</code>. Log files are located at:</p>
+        <pre><code>C:\Users\Public\Daybreak Game Company\Installed Games\EverQuest\Logs\</code></pre>
+        <p>The filename includes your character name and server, e.g. <code>eqlog_Tehom_veeshan.txt</code>.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-title">EQBuffBot</p>
+      <p class="footer-tagline">May your buffs never drop and your tells never cease — unless you want them to.</p>
+      <p class="footer-credit">Enjoy all your buffs. And Cyborz on! ⚔</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
